@@ -32,7 +32,7 @@ public class AddressServiceImpl implements AddressService {
 
         Address address = modelMapper.map(addressRequest, Address.class);
         address.setPerson(person);
-        address.setMainAddress(person.getAddress().isEmpty());
+        address.setMainAddress(person.getAddress() == null || person.getAddress().isEmpty());
         Address savedAddress = addressRepository.save(address);
         return modelMapper.map(savedAddress, AddressResponseDto.class);
     }
@@ -41,6 +41,10 @@ public class AddressServiceImpl implements AddressService {
     public AddressResponseDto update(String addressId, String personId, InsertAddressRequestDto addressRequest) {
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() -> new AddressNotFoundException("Address not found"));
+
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new PersonNotFoundException("Person not found"));
+
         validate(address, personId);
 
         address.setStreet(addressRequest.getStreet());
@@ -91,8 +95,12 @@ public class AddressServiceImpl implements AddressService {
 
 
     private void validate(Address address, String personId) {
+        if (address.getPerson() == null) {
+            throw new InvalidAddressOwnerException("Address does not belong to any person");
+        }
+
         if (!address.getPerson().getId().equals(personId)) {
-            throw new InvalidAddressOwnerException("The address does not belong to the specified person.");
+            throw new InvalidAddressOwnerException("Address does not belong to the specified person");
         }
     }
 }

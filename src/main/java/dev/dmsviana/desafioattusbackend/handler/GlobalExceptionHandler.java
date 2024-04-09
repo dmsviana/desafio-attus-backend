@@ -5,6 +5,7 @@ import dev.dmsviana.desafioattusbackend.exceptions.AddressNotFoundException;
 import dev.dmsviana.desafioattusbackend.exceptions.InvalidAddressOwnerException;
 import dev.dmsviana.desafioattusbackend.exceptions.PersonNotFoundException;
 import org.apache.coyote.BadRequestException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -39,6 +40,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidAddressOwnerException.class)
     @ResponseStatus(BAD_REQUEST)
     public ApiErrors handlePersonNotFoundException(InvalidAddressOwnerException ex) {
+        return new ApiErrors(ex.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(BAD_REQUEST)
+    public ApiErrors handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         return new ApiErrors(ex.getMessage());
     }
 }

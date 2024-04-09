@@ -3,16 +3,15 @@ package dev.dmsviana.desafioattusbackend.domain.person;
 
 import dev.dmsviana.desafioattusbackend.domain.address.Address;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import static jakarta.persistence.CascadeType.ALL;
-import static jakarta.persistence.GenerationType.UUID;
+
 
 @Entity
 @Table(name = "tb_persons")
@@ -20,10 +19,11 @@ import static jakarta.persistence.GenerationType.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Person {
 
     @Id
-    @GeneratedValue(strategy = UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
     private String id;
 
@@ -36,5 +36,10 @@ public class Person {
     @OneToMany(mappedBy = "person", cascade = ALL)
     private List<Address> address;
 
+
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(obj, this);
+    }
 
 }
