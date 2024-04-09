@@ -37,6 +37,12 @@ public class Person {
     private List<Address> address;
 
 
+    public Person(String fullName, LocalDate birthDate, List<Address> address) {
+        this.fullName = fullName;
+        this.birthDate = birthDate;
+        this.address = address;
+    }
+
     @Override
     public boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(obj, this);
