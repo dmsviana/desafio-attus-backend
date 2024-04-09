@@ -40,4 +40,4 @@ git clone https://github.com/dmsviana/desafio-attus-backend.git
 
 Acesse a documentação da API em http://localhost:8080/swagger-ui/index.html.
 
-< Desenvolvido por **dmsviana** />
+< _Desenvolvido por **dmsviana**_ />
